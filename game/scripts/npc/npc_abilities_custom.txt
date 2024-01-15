@@ -2806,7 +2806,7 @@
 		{
 			"schoolboys_number"		
 			{
-				"value"					"5"
+				"value"					"2 3 4 5"
 				"LinkedSpecialBonus"	"special_bonus_birzha_navalny_1"
 			}
 			"schoolboys_duration"		"15"
@@ -2909,7 +2909,7 @@
 
 		"AbilityValues"
 		{
-			"value"						"-7"			
+			"value"						"-5"			
 		}
 	}
 	"special_bonus_birzha_navalny_3"
@@ -2975,7 +2975,7 @@
 
 		"AbilityValues"
 		{
-			"value"						"3"			
+			"value"						"2"			
 		}
 	}
 
