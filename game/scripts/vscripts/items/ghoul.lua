@@ -133,7 +133,6 @@ end
 function modifier_item_ghoul_buff:DeclareFunctions()
     return 
     {
-        MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE,
         MODIFIER_PROPERTY_MOVESPEED_BONUS_CONSTANT,
         MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT,
         MODIFIER_PROPERTY_CASTTIME_PERCENTAGE,
@@ -142,11 +141,6 @@ function modifier_item_ghoul_buff:DeclareFunctions()
         MODIFIER_EVENT_ON_TAKEDAMAGE,
         MODIFIER_EVENT_ON_HERO_KILLED,
     }
-end
-
-function modifier_item_ghoul_buff:GetModifierPreAttack_BonusDamage()
-    local stacks = self:GetAbility():GetSpecialValueFor("damage_per_charge") * self:GetAbility():GetCurrentCharges()
-    return self:GetAbility():GetSpecialValueFor("bonus_damage_active") + stacks
 end
 
 function modifier_item_ghoul_buff:GetModifierMoveSpeedBonus_Constant()
@@ -179,8 +173,7 @@ function modifier_item_ghoul_buff:OnTakeDamage(params)
     if params.inflictor == nil then
         if not self:GetParent():IsIllusion() and bit.band(params.damage_flags, DOTA_DAMAGE_FLAG_REFLECTION) ~= DOTA_DAMAGE_FLAG_REFLECTION then
             local stacks = self:GetAbility():GetSpecialValueFor("lifesteal_per_charge") * self:GetAbility():GetCurrentCharges()
-            local lifesteal = (self:GetAbility():GetSpecialValueFor("lifesteal_active")+stacks) / 100
-            self:GetParent():Heal(params.damage * lifesteal, self:GetAbility())
+            self:GetParent():Heal(params.damage * (stacks / 100), self:GetAbility())
             local particle = "particles/generic_gameplay/generic_lifesteal.vpcf"
 
             if DonateShopIsItemBought(self:GetParent():GetPlayerOwnerID(), 195) or IsInToolsMode() then
@@ -201,8 +194,7 @@ function modifier_item_ghoul_buff:OnTakeDamage(params)
                 end
             end
             local stacks = self:GetAbility():GetSpecialValueFor("spell_lifesteal_per_charge") * self:GetAbility():GetCurrentCharges()
-            local lifesteal = (self:GetAbility():GetSpecialValueFor("magic_lifesteal_active")+stacks) / 100
-            local heal = params.damage * lifesteal
+            local heal = params.damage * (stacks / 100)
             heal = heal * (bonus_percentage / 100 + 1)
             self:GetParent():Heal(heal, self:GetAbility())
             local octarine = ParticleManager:CreateParticle( "particles/items3_fx/octarine_core_lifesteal.vpcf", PATTACH_ABSORIGIN_FOLLOW, params.attacker )
